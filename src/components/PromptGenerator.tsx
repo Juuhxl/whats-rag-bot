@@ -9,8 +9,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Bot, MessageSquare, Database, Cloud, Settings, Download, Copy, CheckCircle } from "lucide-react";
+import { Bot, MessageSquare, Database, Cloud, Settings, Download, Copy, CheckCircle, User, LogOut, Brain } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 
 interface ProjectConfig {
   projectName: string;
@@ -37,6 +38,7 @@ interface ProjectConfig {
 }
 
 const PromptGenerator = () => {
+  const { user, signOut } = useAuth();
   const { toast } = useToast();
   const [config, setConfig] = useState<ProjectConfig>({
     projectName: "",
@@ -471,13 +473,26 @@ ${config.additionalRequirements}
     <div className="min-h-screen bg-gradient-secondary">
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="p-3 bg-gradient-primary rounded-xl">
-              <Bot className="h-8 w-8 text-white" />
+          <div className="flex items-center justify-between mb-4">
+            <div></div>
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-gradient-primary rounded-xl">
+                <Bot className="h-8 w-8 text-white" />
+              </div>
+              <h1 className="text-4xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                Gerador de Prompts RAG
+              </h1>
             </div>
-            <h1 className="text-4xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              Gerador de Prompts RAG
-            </h1>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <User className="h-4 w-4" />
+                <span className="hidden sm:inline">{user?.email}</span>
+              </div>
+              <Button variant="outline" size="sm" onClick={signOut}>
+                <LogOut className="h-4 w-4" />
+                <span className="hidden sm:inline ml-2">Sair</span>
+              </Button>
+            </div>
           </div>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Crie prompts técnicos detalhados para desenvolvimento de chatbots WhatsApp com arquitetura RAG
