@@ -1,0 +1,47 @@
+# Google App Engine configuration
+runtime: nodejs18
+
+# Instance configuration
+instance_class: F2
+automatic_scaling:
+  min_instances: 0
+  max_instances: 10
+  target_cpu_utilization: 0.6
+
+# Environment variables
+env_variables:
+  NODE_ENV: "production"
+  VITE_SUPABASE_URL: "https://nmrdmrifljueujqbjugh.supabase.co"
+  VITE_SUPABASE_PUBLISHABLE_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5tcmRtcmlmbGp1ZXVqcWJqdWdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1NDIzNDksImV4cCI6MjA3MzExODM0OX0.kz0ULw36uD2gVkFklnwdANeULWbwEjfdwaLL5cvOD2s"
+
+# Resource limits
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
+
+# Health check
+readiness_check:
+  path: "/health"
+  check_interval_sec: 5
+  timeout_sec: 4
+  failure_threshold: 2
+  success_threshold: 2
+
+liveness_check:
+  path: "/health"
+  check_interval_sec: 30
+  timeout_sec: 4
+  failure_threshold: 4
+  success_threshold: 2
+
+# Handlers for static files
+handlers:
+- url: /static
+  static_dir: dist/static
+  secure: always
+
+- url: /.*
+  static_files: dist/index.html
+  upload: dist/index.html
+  secure: always

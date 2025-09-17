@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "test:ci": "echo 'No tests specified yet'",
+    "build:prod": "npm run build && npm run optimize",
+    "optimize": "npm run analyze && npm run compress",
+    "analyze": "npx vite-bundle-analyzer dist/stats.html",
+    "compress": "gzip -9 -r dist/",
+    "docker:build": "docker build -t rag-prompt-generator .",
+    "docker:run": "docker run -p 8080:8080 rag-prompt-generator",
+    "docker:test": "docker run --rm rag-prompt-generator npm test",
+    "gcp:deploy": "chmod +x deploy.sh && ./deploy.sh",
+    "gcp:logs": "gcloud run logs read rag-prompt-generator --region=southamerica-east1",
+    "health:check": "curl -f http://localhost:8080/health || exit 1",
+    "security:scan": "npm audit --audit-level moderate",
+    "performance:test": "npx lighthouse http://localhost:8080 --output html --output-path ./lighthouse-report.html"
+  }
+}
